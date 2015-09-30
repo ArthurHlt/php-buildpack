@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-- 2.1.5
+- 2.2.2
 script:
 - git submodule update --init
 - BUNDLE_GEMFILE=cf.Gemfile bundle install
