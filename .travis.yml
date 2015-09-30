@@ -1,0 +1,10 @@
+language: python
+python:
+  - "2.6"
+install:
+  - "export TMPDIR=/tmp"
+  - "export COMPOSER_VENDOR_DIR={BUILD_DIR}/vendor"
+  - "export COMPOSER_BIN_DIR={BUILD_DIR}/bin"
+  - "git submodule update --init"
+  - "pip install -r requirements.txt"
+script: ./run_tests.sh
