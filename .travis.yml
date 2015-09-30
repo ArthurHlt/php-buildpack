@@ -1,10 +1,16 @@
-language: python
-python:
-  - "2.6"
-install:
-  - "export TMPDIR=/tmp"
-  - "export COMPOSER_VENDOR_DIR={BUILD_DIR}/vendor"
-  - "export COMPOSER_BIN_DIR={BUILD_DIR}/bin"
-  - "git submodule update --init"
-  - "pip install -r requirements.txt"
-script: ./run_tests.sh
+language: ruby
+rvm:
+- 2.1.5
+script:
+- git submodule update --init
+- BUNDLE_GEMFILE=cf.Gemfile bundle install
+- BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager cached
+- mv ./*.zip php-buildpack-offline.zip
+deploy:
+  provider: releases
+  api_key:
+    secure: vFJncpq0QvZnYQhTZCtqtxCCOHQv4QobhSKd3WGWO8US6YsctODnNRhS3i5gSP58GBoJ4dY3oP9BnfB6Dv0ex4lodFtKaMIhe8SDKIPWqLdvJfQH4PrW0BeDVRgeHWfAgYnhM5CoMlsFUEdbAf/Cxo2Rp82m9GmYfbIdzKtYTJ1tr12ft3XekZO0CuBrihAc31dwL7LDXRPcwSCzfxaP4D+cjK1QxYbx10UXr58oPqpSsAe6WPnPOeDOqvMqOiHBdOgYBDYuhiXp9FXsr//ByWWeRt1yB+NirtVHp13P06GgVnpDNeLrdyRNwCf3N7WONK3kEi38IoTTx6gM1zCG7owe9hu67eJ7xls79FErYuTx/48NEspcODmzNRdy4KsHe9YME2R5INYOuO2GoJ5rmIfFTbdzY8+p+v2Rg4xWi5kMjtCx3VWEjNnSNJLypw14w9wGQmSxo5pN+y5jffP+C3ZrEpb/VKxA6/flVttiI5RkPKPzMpDDwyIDSuNn4uiPl1jBTuqTW9dEhWsleqIXc4oRTzOdiaGjIapDLo6Z6pXhJV7smG9c8QknZwTCY4j/TE63Sdl/n/eY6UaBRmbo25fpk/rvpGAqHbx3G3hdQRUd7Zv9K3whnLRdo5wcPpAoQl1abO3jt0QlnVhbdMHH9V09zZbBt3oxs96MzkOHGXw=
+  file: php-buildpack-offline.zip
+  on:
+    tags: true
+    all_branches: true
